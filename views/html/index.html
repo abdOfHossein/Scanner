@@ -13,53 +13,38 @@
   <body>
     <div class="countainer">
       <div class="countainer-jpg">
-          <h2 class="title-jpg">Scan JPG</h2>
-          <button id="btn-scan-jpg" type="button">Scan JPG</button>
-          <div id="images"></div>
-          <form
-          id="form1"
-          action="#" 
+        <h2 class="title">Scan JPG</h2>
+        <button id="btn-scan-jpg" type="button">Scan JPG</button>
+        <div id="images"></div>
+        <form
+          id="form-image"
+          action="#"
           method="POST"
           enctype="multipart/form-data"
           target="_blank"
         >
-        <button id="btn-submit-jpg" type="submit">Submit</button>
+          <button class="btn-submit" id="btn-submit-jpg" type="submit">Submit JPG</button>
         </form>
       </div>
-      <div class="seperator">
 
-      </div>
-      <!-- <div class="countainer-pdf">
-        <h2>Scan PDF</h2>
+      <div class="seperator"></div>
 
-        <button id="btn-scan-pdf" type="button">Scan PDF</button>
-
-        <div id="pdf"></div>
-
-        <!-- Previous lines are same as demo-01, below is new addition to demo-02 -->
-
-        <!-- <form
-          id="form1"
-          action="https://asprise.com/scan/applet/upload.php?action=dump"
+      <div class="countainer-pdf">
+        <h2 class="title">Scan PDF</h2>
+        <button id="btn-scan-pdf" type="submit">Scan PDF</button>
+        <div id="pdf">
+        </div>
+        <form
+          id="form-pdf"
+          action="#"
           method="POST"
           enctype="multipart/form-data"
           target="_blank"
         >
-          <input
-            type="text"
-            id="sample-field"
-            name="sample-field"
-            value="Test scan"
-          />
-          <input
-            type="button"
-            value="Submit"
-            onclick="submitFormWithScannedImages();"
-          />
+        <button class="btn-submit" id="btn-submit-pdf" type="submit">Submit PDF</button>
         </form>
+      </div>
 
-        <div id="server_response"></div> -->
-      <!-- </div> --> -->
     </div>
   </body>
 

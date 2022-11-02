@@ -18,14 +18,32 @@ let displayImagesOnPage = function (successful, mesg, response) {
     return;
   }
 
-  let scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
-  for (
-    var i = 0;
-    scannedImages instanceof Array && i < scannedImages.length;
-    i++
-  ) {
-    var scannedImage = scannedImages[i];
-    processScannedImage(scannedImage);
+  // let thumbnails = scanner.getScannedImages(response, false, true); // returns an array of ScannedImage
+  // for (var i = 0; thumbnails instanceof Array && i < thumbnails.length; i++) {
+  //   var thumbnail = thumbnails[i];
+  //   alert('hi');
+  //   processThumbnail(thumbnail);
+  // }
+  // alert('goodby');
+
+  if (response.includes('pdf')) {
+  var thumbnails = scanner.getScannedImages(response, false, true); // returns an array of ScannedImage
+  for (var i = 0; thumbnails instanceof Array && i < thumbnails.length; i++) {
+    var thumbnail = thumbnails[i];
+    alert('hi');
+    processThumbnail(thumbnail);
+  }
+  
+  } else {
+    let scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
+    for (
+      var i = 0;
+      scannedImages instanceof Array && i < scannedImages.length;
+      i++
+    ) {
+      var scannedImage = scannedImages[i];
+      processScannedImage(scannedImage);
+    }
   }
 };
 
@@ -46,7 +64,7 @@ let processScannedImage = function (scannedImage) {
 
 // function of send Files to Server with From
 let submitFormWithScannedImages = function () {
-  scanner.submitFormWithImages('form1', imagesScanned, function (xhr) {
+  scanner.submitFormWithImages('form-image', imagesScanned, function (xhr) {
     if (xhr.readyState == 4) {
       // 4: request finished and response is ready
       document.getElementById('images').innerHTML = ''; // clear images
@@ -54,33 +72,36 @@ let submitFormWithScannedImages = function () {
       alert('succuss');
       return;
     }
-    // alert(`err of send File : ${xhr.mesg}`);
+
+    scanner.submitFormWithImages('form-pdf', imagesScanned, function (xhr) {
+      if (xhr.readyState == 4) {
+        // 4: request finished and response is ready
+        document.getElementById('pdf').innerHTML = ''; // clear images
+        imagesScanned = [];
+        alert('success');
+      }
+    });
   });
 };
 
-let scanConfig = {
-  twain_cap_setting: {
-    ICAP_PIXELTYPE: 'TWPT_RGB,TWPT_GRAY', // Color
-    ICAP_XRESOLUTION: '100', // DPI: 100
-    ICAP_YRESOLUTION: '100',
-    ICAP_SUPPORTEDSIZES: 'TWSS_A4', // Paper size: TWSS_USLETTER, TWSS_A4, ...
-  },
+let scanImgConfig = {
   output_settings: [
     {
       type: 'return-base64',
-      // ICAP_XRESOLUTION: '100', // DPI: 100
-      // ICAP_YRESOLUTION: '100',
-      // type: 'save',
       format: 'jpg',
-      // save_path:
-      //   'C:\\Users\\Hampa\\Desktop\\repository\\Scanner-Project\\Scanner-Project\\storage\\${TMS}${EXT}',
+    },
+    {
+      type: 'save',
+      format: 'jpg',
+      save_path:
+        'C:\\Users\\Hampa\\Desktop\\repository\\Scanner-Project\\Scanner-Project\\storage\\${TMS}${EXT}',
     },
   ],
 };
 
 $('#btn-scan-jpg').click(function (e) {
   e.preventDefault();
-  scanner.scan(displayImagesOnPage, scanConfig);
+  scanner.scan(displayImagesOnPage, scanImgConfig);
 });
 
 $('#btn-submit-jpg').click(function (e) {
@@ -88,84 +109,103 @@ $('#btn-submit-jpg').click(function (e) {
   submitFormWithScannedImages();
 });
 
-//===============================
-// ====> PDF
+//==============================================================================
 
-// function scanToPdfWithThumbnails() {
-//   scanner.scan(displayImagesOnPage,
-//           {
-//               "output_settings": [
-//                   {
-//                       "type": "return-base64",
-//                       "format": "pdf",
-//                       "pdf_text_line": "By ${USERNAME} on ${DATETIME}"
-//                   },
-//                   {
-//                       "type": "return-base64-thumbnail",
-//                       "format": "jpg",
-//                       "thumbnail_height": 200
-//                   }
-//               ]
-//           }
-//   );
-// }
-
-// /** Processes the scan result */
-// function displayImagesOnPage(successful, mesg, response) {
-//   if(!successful) { // On error
-//       console.error('Failed: ' + mesg);
-//       return;
+/** Processes the scan result */
+// let displayImagesOnPage = function (successful, mesg, response) {
+//   if (!successful) {
+//     // On error
+//     console.error('Failed: ' + mesg);
+//     alert('Failed: ' + mesg);
+//     return;
 //   }
 
-//   if(successful && mesg != null && mesg.toLowerCase().indexOf('user cancel') >= 0) { // User cancelled.
-//       console.info('User cancelled');
-//       return;
+//   if (
+//     successful &&
+//     mesg != null &&
+//     mesg.toLowerCase().indexOf('user cancel') >= 0
+//   ) {
+//     // User cancelled.
+//     console.info('User cancelled');
+//     return;
 //   }
 
-//   var scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
-//   for(var i = 0; (scannedImages instanceof Array) && i < scannedImages.length; i++) {
-//       var scannedImage = scannedImages[i];
-//       processOriginal(scannedImage);
-//   }
+//   // var scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
+//   // for (
+//   //   var i = 0;
+//   //   scannedImages instanceof Array && i < scannedImages.length;
+//   //   i++
+//   // ) {
+//   //   var scannedImage = scannedImages[i];
+//   //   processOriginal(scannedImage);
+//   // }
 
 //   var thumbnails = scanner.getScannedImages(response, false, true); // returns an array of ScannedImage
-//   for(var i = 0; (thumbnails instanceof Array) && i < thumbnails.length; i++) {
-//       var thumbnail = thumbnails[i];
-//       processThumbnail(thumbnail);
+//   for (var i = 0; thumbnails instanceof Array && i < thumbnails.length; i++) {
+//     var thumbnail = thumbnails[i];
+//     alert('hi');
+//     processThumbnail(thumbnail);
 //   }
-// }
+//   alert('goodby');
+// };
 
-// /** Images scanned so far. */
-// var imagesScanned2 = [];
+let scanPdfConfig = {
+  output_settings: [
+    {
+      type: 'return-base64',
+      format: 'jpg',
+      // pdf_text_line: 'By ${USERNAME} on ${DATETIME}',
+    },
+    {
+      type: 'save',
+      // type: 'save',
+      format: 'pdf',
+      save_path:
+        'C:\\Users\\Hampa\\Desktop\\repository\\Scanner-Project\\Scanner-Project\\storage\\${TMS}${EXT}',
+    },
+  ],
+};
 
-// /** Processes an original */
-// function processOriginal(scannedImage) {
-//   imagesScanned2.push(scannedImage);
-// }
+/** Images scanned so far. */
+var imagesScanned2 = [];
 
-// /** Processes a thumbnail */
-// function processThumbnail(scannedImage) {
-//   var elementImg = scanner.createDomElementFromModel( {
-//       'name': 'img',
-//       'attributes': {
-//           'class': 'scanned',
-//           'src': scannedImage.src
-//       }
+/** Processes an original */
+function processOriginal(scannedImage) {
+  imagesScanned2.push(scannedImage);
+}
+
+/** Processes a thumbnail */
+let processThumbnail = function (scannedImage) {
+  alert('hi');
+  var elementImg = scanner.createDomElementFromModel({
+    name: 'img',
+    attributes: {
+      class: 'scanned',
+      src: scannedImage.src,
+    },
+  });
+  document.getElementById('pdf').appendChild(elementImg);
+};
+
+/** Upload scanned images by submitting the form */
+// let submitFormWithScannedImages = function () {
+//   scanner.submitFormWithImages('form-pdf', imagesScanned, function (xhr) {
+//     if (xhr.readyState == 4) {
+//       // 4: request finished and response is ready
+//       document.getElementById('pdf').innerHTML = ''; // clear images
+//       imagesScanned = [];
+//       alert('success');
+//     }
 //   });
-//   document.getElementById('images').appendChild(elementImg);
-// }
+// };
 
-// /** Upload scanned images by submitting the form */
-// function submitFormWithScannedImages() {
-//   if (scanner.submitFormWithImages('form1', imagesScanned, function (xhr) {
-//       if (xhr.readyState == 4) { // 4: request finished and response is ready
-//           document.getElementById('server_response').innerHTML = "<h2>Response from the server: </h2>" + xhr.responseText;
-//           document.getElementById('images').innerHTML = ''; // clear images
-//           imagesScanned = [];
-//       }
-//   })) {
-//       document.getElementById('server_response').innerHTML = "Submitting, please stand by ...";
-//   } else {
-//       document.getElementById('server_response').innerHTML = "Form submission cancelled. Please scan first.";
-//   }
-// }
+$('#btn-scan-pdf').click(function (e) {
+  e.preventDefault();
+  alert('hi');
+  scanner.scan(displayImagesOnPage, scanPdfConfig);
+});
+
+$('#btn-submit-pdf').click(function (e) {
+  e.preventDefault();
+  submitFormWithScannedImages();
+});

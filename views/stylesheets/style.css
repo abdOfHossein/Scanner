@@ -32,6 +32,10 @@ div#images {
   margin-top: 20px;
 }
 
+div#pdf{
+  margin-top: 20px;
+}
+
 .countainer {
   width: 100%;
   display: flex;
@@ -49,12 +53,13 @@ div#images {
 .countainer-pdf {
   margin-left: 7px;
   width: 50%;
-
+  display: flex;
+  flex-direction: column;
 }
-#btn-submit-jpg{
+.btn-submit{
   width: 100%;
 }
-.title-jpg{
+.title{
   margin: 20px auto;
 }
 
