@@ -9,12 +9,25 @@
   </head>
 
   <body>
-    <h2>Scanner.js: scan as JPG and display on the web page</h2>
+    <div>
 
-    <button id="btn-scan" type="button">Scan</button>
+      <h2>Scanner.js: scan as JPG & PDF</h2>
+      <button id="btn-scan" type="button">Scan</button>
+    </div>
 
+    <form
+      id="form-save-db"
+      action="/saveFile"
+      method="POST"
+      enctype="multipart/form-data"
+      target="_blank"
+    >
+      <input id="btn-save-db" type="button" value="Save In DataBase" />
+      <input id="file" type="file" name="avatar" />
+    </form>
+
+    <div id="server_response"></div>
     <div id="images"></div>
-    <div id="test"></div>
   </body>
 
   <script
