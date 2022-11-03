@@ -19,7 +19,7 @@ let displayImagesOnPage = function (successful, mesg, response) {
   }
 
   if (response.includes('pdf')) {
-    let scannedImages = scanner.getScannedImages(response, true, false,true); // returns an array of ScannedImage
+    let scannedImages = scanner.getScannedImages(response, true, false, true); // returns an array of ScannedImage
     for (
       let i = 0;
       scannedImages instanceof Array && i < scannedImages.length;
@@ -29,13 +29,12 @@ let displayImagesOnPage = function (successful, mesg, response) {
       processOriginal(scannedImage);
     }
 
-    let thumbnails = scanner.getScannedImages(response, false, true,false); // returns an array of ScannedImage
+    let thumbnails = scanner.getScannedImages(response, false, true, false); // returns an array of ScannedImage
     for (let i = 0; thumbnails instanceof Array && i < thumbnails.length; i++) {
       let thumbnail = thumbnails[i];
       processThumbnail(thumbnail);
     }
   } else {
-
     let scannedImages = scanner.getScannedImages(response, true, false); // returns an array of ScannedImage
     for (
       let i = 0;
@@ -117,10 +116,8 @@ let scanImgConfig = {
     {
       type: 'save',
       format: 'jpg',
-     
-      save_path: '\\storage\\wow',
-      // save_path: '..\\..\\..\\storage\\${TMS}${EXT}',
-      // " C:\\Users\\Hampa\Desktop\\repository\\Scanner-Project\\storage"
+      save_path:
+        'C:\\Users\\Hampa\\Desktop\\repository\\Scanner-Project\\storage\\${TMS}${EXT}',
     },
   ],
 };
@@ -139,7 +136,8 @@ let scanPdfConfig = {
     {
       type: 'save',
       format: 'pdf',
-      save_path: '..\\..\\..\\storage\\${TMS}${EXT}',
+      save_path:
+    "C:\\Users\\Hampa\\Desktop\\repository\\Scanner-Project\\storage\\${TMS}${EXT}"
     },
   ],
 };
@@ -148,7 +146,7 @@ let scanPdfConfig = {
 
 $('#btn-scan-jpg').click(function (e) {
   e.preventDefault();
-  scanner.scan(displayImagesOnPage, scanImgConfig)
+  scanner.scan(displayImagesOnPage, scanImgConfig);
 });
 
 $('#btn-submit-jpg').click(function (e) {
